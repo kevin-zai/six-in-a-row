@@ -56,3 +56,4 @@ void mo::paintEvent(QPaintEvent *)
      q.drawPixmap(rect(),QPixmap(":/new/prefix1/template.png"));
      q.end();
 }
+
