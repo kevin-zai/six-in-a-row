@@ -4,6 +4,7 @@
 #include <QWidget>
 #include<QPushButton>
 #include"qi.h"
+#include"qi2.h"
 
 class mo : public QWidget
 {
@@ -25,6 +26,7 @@ private:
     QPushButton a3;
     QPushButton a4;
     qi qip;
+    qi2 qip2;
 };
 
 #endif // MO_H
