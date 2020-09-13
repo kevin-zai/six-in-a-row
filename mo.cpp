@@ -26,7 +26,7 @@ mo::mo(QWidget *parent) : QWidget(parent)
     connect(&a2,&QPushButton::clicked,this,
             [=]()
             {
-                qip.show();
+                qip2.show();
                 this->hide();
             });
     connect(&a3,&QPushButton::clicked,this,
@@ -43,7 +43,6 @@ mo::mo(QWidget *parent) : QWidget(parent)
     connect(&qip,&qi::signal1,this,
             [=]()
             {
-                //
                 qip.hide();
                 this->show();
             });

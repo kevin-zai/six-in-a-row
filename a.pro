@@ -27,12 +27,18 @@ SOURCES += \
         main.cpp \
         widget.cpp \
     mo.cpp \
-    qi.cpp
+    qi.cpp \
+    fault.cpp \
+    jie.cpp \
+    qi2.cpp
 
 HEADERS += \
         widget.h \
     mo.h \
-    qi.h
+    qi.h \
+    fault.h \
+    jie.h \
+    qi2.h
 
 RESOURCES += \
     image.qrc

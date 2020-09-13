@@ -1,6 +1,9 @@
 #include "qi.h"
 #include<QPainter>
 #include<QPushButton>
+#include <QMouseEvent>
+#include<QDebug>
+
 qi::qi(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle("游戏");
@@ -13,16 +16,51 @@ qi::qi(QWidget *parent) : QWidget(parent)
                     {
                         emit signal1();
                     });
+    p2.setParent(this);
+    p2.setText("认输");
+    p2.setGeometry(850,1010,80,80);
+
+    for(int i=1;i<22;i++)for(int j=1;j<22;j++)z[i][j]=0;
+
+    connect(&ji,&jie::mesignal,this,
+            [=]()
+            {
+                ji.hide();
+                emit signal1();
+            });
+    connect(&p2,&QPushButton::clicked,this,
+            [=]()
+            {
+                if(flag==1)ji.fgg.setText("黑棋认输");
+                else ji.fgg.setText("白棋认输");
+                ji.show();
+            });
+
+}
+
+void qi::mousePressEvent(QMouseEvent *e ){
+    xx=e->x();
+    yy=e->y();
+    if(xx>=WIDTH&&xx<=WIDTH*21&&yy>=WIDTH&&yy<=WIDTH*21){
+    int a=xx%WIDTH;
+    int b=yy%WIDTH;
+    if(a>WIDTH/2)xx=xx/WIDTH+1;
+    else xx=xx/WIDTH;
+    if(b>WIDTH/2)yy=yy/WIDTH+1;
+    else yy=yy/WIDTH;
+    if(z[xx][yy]!=0)fa.show();
+    else{z[xx][yy]=flag;
+    flag=-flag;}}
+    update();
 }
 
 void qi::paintEvent(QPaintEvent *)
 {
+    this->update();
     QPainter pp(this);
     pp.drawPixmap(rect(),QPixmap(":/new/prefix1/template.png"));
     pp.setPen(QPen(Qt::lightGray,2,Qt::SolidLine));//钢笔工具：颜色，线号，实线
-    const int SIZE=10;
-    const int WIDTH=80;
-    const int x=80,y=80;
+
     //画SIZE+1条横线
     for(int i=0;i<SIZE+1;i++)
       {
@@ -33,5 +71,103 @@ void qi::paintEvent(QPaintEvent *)
       {
         pp.drawLine(x+WIDTH*i,y,x+WIDTH*i,y+WIDTH*(SIZE));
       }
-     pp.end();
+    for(int i=1;i<22;i++)for(int j=1;j<22;j++){
+    if(z[i][j]==1){pp.setBrush(QBrush(Qt::black,Qt::SolidPattern));//毛刷：颜色，实图案
+        pp.drawEllipse(i*WIDTH-10,j*WIDTH-10,WIDTH/2,WIDTH/2);//画椭圆：中心点X,Y,宽度，高度
+    }
+    if(z[i][j]==-1){pp.setBrush(QBrush(Qt::white,Qt::SolidPattern));
+    pp.drawEllipse(i*WIDTH-10,j*WIDTH-10,WIDTH/2,WIDTH/2);//画椭圆：中心点X,Y,宽度，高度
+    }
+    }
+    int mm=0;
+    //if(flag==-1){
+
+    //}
+
+    if(mm==0){
+    for (int i = 0; i < 6; i++)
+       {
+           // 往左5个，往右匹配4个子，20种情况
+           if (yy - i > 0 &&
+               yy - i + 5 < 22 &&
+               z[xx][yy - i] == z[xx][yy - i + 1] &&
+               z[xx][yy - i] == z[xx][yy - i + 2] &&
+               z[xx][yy - i] == z[xx][yy - i + 3] &&
+               z[xx][yy - i] == z[xx][yy - i + 4] &&
+               z[xx][yy - i] == z[xx][yy - i + 5]){
+               mm=1;break;}
+       }
+
+       // 竖直方向(上下延伸4个)
+       for (int i = 0; i < 6; i++)
+       {
+           if (xx - i > 0 &&
+               xx - i + 5 < 22 &&
+               z[xx - i][yy] == z[xx - i + 1][yy] &&
+               z[xx - i][yy] == z[xx - i + 2][yy] &&
+               z[xx - i][yy] == z[xx - i + 3][yy] &&
+               z[xx - i][yy] == z[xx - i + 4][yy] &&
+               z[xx - i][yy] == z[xx - i + 5][yy]){
+               mm=1;break;}
+       }
+
+       // 左斜方向
+       for (int i = 0; i < 6; i++)
+       {
+           if (xx + i < 22 &&
+               xx + i - 5 > 0 &&
+               yy - i > 0 &&
+               yy - i + 5 < 22 &&
+               z[xx + i][yy - i] == z[xx + i - 1][yy - i + 1] &&
+               z[xx + i][yy - i] == z[xx + i - 2][yy - i + 2] &&
+               z[xx + i][yy - i] == z[xx + i - 3][yy - i + 3] &&
+               z[xx + i][yy - i] == z[xx + i - 4][yy - i + 4] &&
+               z[xx + i][yy - i] == z[xx + i - 5][yy - i + 5]){
+               mm=1;break;}
+       }
+
+       // 右斜方向
+       for (int i = 0; i < 6; i++)
+       {
+           if (xx - i > 0 &&
+               xx - i + 5 < 22 &&
+               yy - i > 0 &&
+               yy - i + 5 < 22 &&
+               z[xx - i][yy - i] == z[xx - i + 1][yy - i + 1] &&
+               z[xx - i][yy - i] == z[xx - i + 2][yy - i + 2] &&
+               z[xx - i][yy - i] == z[xx - i + 3][yy - i + 3] &&
+               z[xx - i][yy - i] == z[xx - i + 4][yy - i + 4] &&
+               z[xx - i][yy - i] == z[xx - i + 5][yy - i + 5]){
+               mm=1;break;}
+       }
+       }
+       //和
+       if(mm==0){int ytr=0;
+       for (int i = 1; i <22; i++){
+               for (int j = 1; j < 22; j++)
+               {
+                   if (z[i][j]==0)
+                       ytr++;
+               }
+       if(ytr!=0)break;
+       }
+       if(ytr==0)mm=4;
+       }
+       if(mm==1){
+           if(flag==1)
+               ji.fgg.setText("白子胜利");
+           else ji.fgg.setText("黑子胜利");
+
+           ji.show();
+       }
+       if(mm==4){
+           ji.fgg.setText("和棋");
+           ji.show();
+       }
+
+
+
+
 }
+
+

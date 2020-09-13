@@ -1,16 +1,16 @@
-#ifndef QI_H
-#define QI_H
+#ifndef QI2_H
+#define QI2_H
 
 #include <QWidget>
 #include<QPushButton>
 #include"fault.h"
 #include"jie.h"
 
-class qi : public QWidget
+class qi2 : public QWidget
 {
     Q_OBJECT
 public:
-    explicit qi(QWidget *parent = nullptr);
+    explicit qi2(QWidget *parent = nullptr);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -33,5 +33,4 @@ private:
     fault fa;
     jie ji;
 };
-
-#endif // QI_H
+#endif // QI2_H
