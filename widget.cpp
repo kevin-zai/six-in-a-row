@@ -13,6 +13,8 @@ Widget::Widget(QWidget *parent)
     bu2.setText("退出");
     bu1.setGeometry(480,200,240,120);
     bu2.setGeometry(480,800,240,120);
+    bu1.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
+    bu2.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
     connect(&bu2,&QPushButton::clicked,this,&Widget::close);
     connect(&bu1,&QPushButton::clicked,this,
             [=]()

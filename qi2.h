@@ -11,7 +11,7 @@ class qi2 : public QWidget
     Q_OBJECT
 public:
     explicit qi2(QWidget *parent = nullptr);
-
+    int z[23][23];
 protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent*e);
@@ -25,7 +25,7 @@ private:
     QPushButton p1;
     QPushButton p2;
     int flag=1;
-    int z[22][22];
+
     int xx,yy;
     const int SIZE=20;
     const int WIDTH=40;
