@@ -6,6 +6,7 @@
 #include"fault.h"
 #include"jie.h"
 #include<QLabel>
+#include"quren.h"
 
 class qi : public QWidget
 {
@@ -29,6 +30,7 @@ private:
     QPushButton p1;
     QPushButton p2;
     QPushButton p3;
+    QPushButton p4;
     int flag=1;
     int xx,yy,zero,one,ke;
     const int SIZE=20;
@@ -36,6 +38,7 @@ private:
     const int x=40,y=40;
     fault fa;
     jie ji;
+    quren ren;
     QLabel d1;
 
 };

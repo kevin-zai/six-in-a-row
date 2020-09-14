@@ -46,8 +46,12 @@ mo::mo(QWidget *parent) : QWidget(parent)
     connect(&a3,&QPushButton::clicked,this,
             [=]()
             {
-                qip.show();
-                this->hide();
+        for(int i=1;i<22;i++)for(int j=1;j<22;j++)qip2.z[i][j]=0;
+        for(int i=1;i<22;i++){qip2.z[i][0]=2;qip2.z[i][22]=2;}
+        for(int i=1;i<22;i++){qip2.z[0][i]=2;qip2.z[22][i]=2;}
+        qip2.start=1;
+        qip2.show();
+        this->hide();
             });
     connect(&a4,&QPushButton::clicked,this,
             [=]()
@@ -58,6 +62,12 @@ mo::mo(QWidget *parent) : QWidget(parent)
             [=]()
             {
                 qip.hide();
+                this->show();
+            });
+    connect(&qip2,&qi2::signal1,this,
+            [=]()
+            {
+                qip2.hide();
                 this->show();
             });
 
