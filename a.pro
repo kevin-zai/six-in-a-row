@@ -30,7 +30,8 @@ SOURCES += \
     qi.cpp \
     fault.cpp \
     jie.cpp \
-    qi2.cpp
+    qi2.cpp \
+    quren.cpp
 
 HEADERS += \
         widget.h \
@@ -38,7 +39,8 @@ HEADERS += \
     qi.h \
     fault.h \
     jie.h \
-    qi2.h
+    qi2.h \
+    quren.h
 
 RESOURCES += \
     image.qrc

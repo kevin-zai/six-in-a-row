@@ -2,7 +2,7 @@
 #include<QPainter>
 #include<QPushButton>
 #include <QMouseEvent>
-
+#include<QDialog>
 qi::qi(QWidget *parent) : QWidget(parent)
 {
     setWindowTitle("游戏");
@@ -12,6 +12,8 @@ qi::qi(QWidget *parent) : QWidget(parent)
     d1.move(900,200);
     d2.setParent(this);
     d2.move(900,600);
+    d1.resize(300,100);
+    d2.resize(300,100);
     d2.setStyleSheet("color:white;font: bold 30px;");
     d1.setStyleSheet("color:white;font: bold 30px;");
     p1.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
@@ -31,14 +33,30 @@ qi::qi(QWidget *parent) : QWidget(parent)
     p3.setParent(this);
     p3.setText("重玩");
     p3.setGeometry(580,1010,80,80);
+    p4.setParent(this);
+    p4.setText("和棋");
+    p4.setGeometry(320,1010,80,80);
+    p4.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
 
     for(int i=1;i<22;i++)for(int j=1;j<22;j++)z[i][j]=0;
     for(int i=1;i<22;i++){z[i][0]=2;z[i][22]=2;}
     for(int i=1;i<22;i++){z[0][i]=2;z[22][i]=2;}
 
+    connect(&p4,&QPushButton::clicked,this,
+            [=](){
+        if(mos==2){ji.fgg.setText("和        棋");ji.show();}
+        if(mos==1)ren.show();
+    });
+
     connect(&ji,&jie::mesignal,this,
             [=]()
-            {
+            {   flag=1;
+                ji.hide();
+                emit signal1();
+            });
+    connect(&ren,&quren::signal2,this,
+            [=]()
+            {   flag=1;
                 ji.hide();
                 emit signal1();
             });
@@ -52,6 +70,7 @@ qi::qi(QWidget *parent) : QWidget(parent)
     connect(&p3,&QPushButton::clicked,this,
             [=]()
             {
+                 flag=1;
                  for(int i=1;i<22;i++)for(int j=1;j<22;j++)z[i][j]=0;
                  for(int i=1;i<22;i++){z[i][0]=2;z[i][22]=2;}
                  for(int i=1;i<22;i++){z[0][i]=2;z[22][i]=2;}
