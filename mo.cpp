@@ -17,16 +17,30 @@ mo::mo(QWidget *parent) : QWidget(parent)
     a4.setParent(this);
     a4.setText("返回");
     a4.setGeometry(480,950,240,120);
+    a1.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
+    a2.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
+    a3.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
+    a4.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
     connect(&a1,&QPushButton::clicked,this,
             [=]()
             {
+                for(int i=1;i<22;i++)for(int j=1;j<22;j++)qip.z[i][j]=0;
+                for(int i=1;i<22;i++){qip.z[i][0]=2;qip.z[i][22]=2;}
+                for(int i=1;i<22;i++){qip.z[0][i]=2;qip.z[22][i]=2;}
+                qip.mos=1;
+                qip.d2.setText("白棋：player2");
                 qip.show();
                 this->hide();
             });
     connect(&a2,&QPushButton::clicked,this,
             [=]()
             {
-                qip2.show();
+                for(int i=1;i<22;i++)for(int j=1;j<22;j++)qip.z[i][j]=0;
+                for(int i=1;i<22;i++){qip.z[i][0]=2;qip.z[i][22]=2;}
+                for(int i=1;i<22;i++){qip.z[0][i]=2;qip.z[22][i]=2;}
+                qip.mos=2;
+                qip.d2.setText("白棋：PC");
+                qip.show();
                 this->hide();
             });
     connect(&a3,&QPushButton::clicked,this,
