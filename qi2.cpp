@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include<QDebug>
 #include <QTime>
+#include<QSound>
 
 qi2::qi2(QWidget *parent) : QWidget(parent)
 {
@@ -29,6 +30,10 @@ qi2::qi2(QWidget *parent) : QWidget(parent)
     p4.setText("和棋");
     p4.setGeometry(320,1010,80,80);
     p4.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
+    p5.setText("悔棋");
+    p5.setParent(this);
+    p5.setStyleSheet("color:blue;font: bold 30px;background-color: yellow;");
+    p5.setGeometry(55,1010,80,80);
     connect(&p4,&QPushButton::clicked,this,
             [=](){
         ji.fgg.setText("和        棋");
@@ -72,6 +77,19 @@ qi2::qi2(QWidget *parent) : QWidget(parent)
                  for(int i=1;i<22;i++){z[i][0]=2;z[i][22]=2;}
                  for(int i=1;i<22;i++){z[0][i]=2;z[22][i]=2;}
             });
+    connect(&p5,&QPushButton::clicked,this,
+            [=]()
+            {
+                if(cc>0){
+                 flag=-flag;
+                 z[cx[cc]][cy[cc]]=0;
+                 cc=cc-1;
+                }
+                if(cc==0){
+                    start=1;
+                }
+
+            });
 
 }
 
@@ -85,31 +103,36 @@ void qi2::mousePressEvent(QMouseEvent * ){
         z[xx][yy]=flag;
         flag=-flag;
         start=0;
+        cc++;
+        cx[cc]=xx;
+        cy[cc]=yy;
+        //QSound *sound = new QSound(":/new/prefix1/5390 (1).wav");
+        //sound->play();
     }
     else{
 
-            int personNum=0;
-            int botNum=0;
-            int  emptyNum=0;
-            int score[22][22];
+            int wanjia=0;
+            int aiqiz=0;
+            int  kong=0;
+            int fenshu[22][22];
             for(int i=1;i<22;i++)
-                for(int y=1;y<22;y++)score[i][y]=0;
+                for(int y=1;y<22;y++)fenshu[i][y]=0;
 
-            for (int row = 0; row < 22; row++)
-                    for (int col = 0; col < 22; col++)
+            for (int hangs = 0; hangs < 22; hangs++)
+                    for (int leis = 0; leis < 22; leis++)
                     {
                         // 空白点就算
-                        if (row > 0 && col > 0 &&
-                            z[row][col] == 0)
+                        if (hangs > 0 && leis > 0 &&
+                            z[hangs][leis] == 0)
                         {
                             // 遍历周围八个方向
                             for (int y = -1; y <= 1; y++)
                                 for (int x = -1; x <= 1; x++)
                                 {
                                     // 重置
-                                    personNum = 0;
-                                    botNum = 0;
-                                    emptyNum = 0;
+                                    wanjia = 0;
+                                    aiqiz = 0;
+                                    kong = 0;
 
                                     // 原坐标不算
                                     if (!(y == 0 && x == 0))
@@ -119,17 +142,17 @@ void qi2::mousePressEvent(QMouseEvent * ){
                                         // 对玩家评分（正反两个方向）
                                         for (int i = 1; i <= 5; i++)
                                         {
-                                            if (row + i * y > 0 && row + i * y < 22 &&
-                                                col + i * x > 0 && col + i * x < 22 &&
-                                                z[row + i * y][col + i * x] == 1) // 玩家的子
+                                            if (hangs + i * y > 0 && hangs + i * y < 22 &&
+                                                leis + i * x > 0 && leis + i * x < 22 &&
+                                                z[hangs + i * y][leis + i * x] == 1) // 玩家的子
                                             {
-                                                personNum++;
+                                                wanjia++;
                                             }
-                                            else if (row + i * y > 0 && row + i * y < 22 &&
-                                                     col + i * x > 0 && col + i * x < 22 &&
-                                                     z[row + i * y][col + i * x] == 0) // 空白位
+                                            else if (hangs + i * y > 0 && hangs + i * y < 22 &&
+                                                     leis + i * x > 0 && leis + i * x < 22 &&
+                                                     z[hangs + i * y][leis + i * x] == 0) // 空白位
                                             {
-                                                emptyNum++;
+                                                kong++;
                                                 break;
                                             }
                                             else            // 出边界
@@ -138,66 +161,66 @@ void qi2::mousePressEvent(QMouseEvent * ){
 
                                         for (int i = 1; i <= 5; i++)
                                         {
-                                            if (row - i * y > 0 && row - i * y < 22 &&
-                                                col - i * x > 0 && col - i * x < 22 &&
-                                                z[row - i * y][col - i * x] == 1) // 玩家的子
+                                            if (hangs - i * y > 0 && hangs - i * y < 22 &&
+                                                leis - i * x > 0 && leis - i * x < 22 &&
+                                                z[hangs - i * y][leis - i * x] == 1) // 玩家的子
                                             {
-                                                personNum++;
+                                                wanjia++;
                                             }
-                                            else if (row - i * y > 0 && row - i * y < 22 &&
-                                                     col - i * x > 0 && col - i * x < 22 &&
-                                                     z[row - i * y][col - i * x] == 0) // 空白位
+                                            else if (hangs - i * y > 0 && hangs - i * y < 22 &&
+                                                     leis - i * x > 0 && leis - i * x < 22 &&
+                                                     z[hangs - i * y][leis - i * x] == 0) // 空白位
                                             {
-                                                emptyNum++;
+                                                kong++;
                                                 break;
                                             }
                                             else            // 出边界
                                                 break;
                                         }
 
-                                        if (personNum == 1)                      // 杀二
-                                            score[row][col] += 10;
-                                        else if (personNum == 2)                 // 杀三
+                                        if (wanjia == 1)                      // 杀二
+                                            fenshu[hangs][leis] += 10;
+                                        else if (wanjia == 2)                 // 杀三
                                         {
-                                            if (emptyNum == 1)
-                                               score[row][col] += 30;
-                                            else if (emptyNum == 2)
-                                                score[row][col] += 40;
+                                            if (kong == 1)
+                                               fenshu[hangs][leis] += 30;
+                                            else if (kong == 2)
+                                                fenshu[hangs][leis] += 40;
                                         }
-                                        else if (personNum == 3)                 // 杀四
+                                        else if (wanjia == 3)                 // 杀四
                                         {
                                             // 量变空位不一样，优先级不一样
-                                            if (emptyNum == 1)
-                                                score[row][col] += 60;
-                                            else if (emptyNum == 2)
-                                                score[row][col] += 110;
+                                            if (kong == 1)
+                                                fenshu[hangs][leis] += 60;
+                                            else if (kong == 2)
+                                                fenshu[hangs][leis] += 110;
                                         }
-                                        else if (personNum == 4){                 // 杀五
-                                            if (emptyNum == 1)
-                                                score[row][col] += 1000;
-                                            else if (emptyNum == 2)
-                                                score[row][col] += 2000;}
-                                        else if(personNum == 5)
-                                            score[row][col] += 100000;
+                                        else if (wanjia == 4){                 // 杀五
+                                            if (kong == 1)
+                                                fenshu[hangs][leis] += 1000;
+                                            else if (kong == 2)
+                                                fenshu[hangs][leis] += 2000;}
+                                        else if(wanjia == 5)
+                                            fenshu[hangs][leis] += 100000;
 
 
                                         // 进行一次清空
-                                        emptyNum = 0;
+                                        kong = 0;
 
                                         // 对AI评分
                                         for (int i = 1; i <= 5; i++)
                                         {
-                                            if (row + i * y > 0 && row + i * y < 22 &&
-                                                col + i * x > 0 && col + i * x < 22 &&
-                                                z[row + i * y][col + i * x] == 1) // 玩家的子
+                                            if (hangs + i * y > 0 && hangs + i * y < 22 &&
+                                                leis + i * x > 0 && leis + i * x < 22 &&
+                                                z[hangs + i * y][leis + i * x] == 1) // 玩家的子
                                             {
-                                                botNum++;
+                                                aiqiz++;
                                             }
-                                            else if (row + i * y > 0 && row + i * y < 22 &&
-                                                     col + i * x > 0 && col + i * x < 22 &&
-                                                     z[row +i * y][col + i * x] == 0) // 空白位
+                                            else if (hangs + i * y > 0 && hangs + i * y < 22 &&
+                                                     leis + i * x > 0 && leis + i * x < 22 &&
+                                                     z[hangs +i * y][leis + i * x] == 0) // 空白位
                                             {
-                                                emptyNum++;
+                                                kong++;
                                                 break;
                                             }
                                             else            // 出边界
@@ -206,49 +229,49 @@ void qi2::mousePressEvent(QMouseEvent * ){
 
                                         for (int i = 1; i <= 5; i++)
                                         {
-                                            if (row - i * y > 0 && row - i * y < 22 &&
-                                                col - i * x > 0 && col - i * x < 22 &&
-                                                z[row - i * y][col - i * x] == -1) // AI的子
+                                            if (hangs - i * y > 0 && hangs - i * y < 22 &&
+                                                leis - i * x > 0 && leis - i * x < 22 &&
+                                                z[hangs - i * y][leis - i * x] == -1) // AI的子
                                             {
-                                                botNum++;
+                                                aiqiz++;
                                             }
-                                            else if (row - i * y > 0 && row - i * y <22 &&
-                                                     col - i * x > 0 && col - i * x < 22&&
-                                                     z[row - i * y][col - i * x] == 0) // 空白位
+                                            else if (hangs - i * y > 0 && hangs - i * y <22 &&
+                                                     leis - i * x > 0 && leis - i * x < 22&&
+                                                     z[hangs - i * y][leis - i * x] == 0) // 空白位
                                             {
-                                                emptyNum++;
+                                                kong++;
                                                 break;
                                             }
                                             else            // 出边界
                                                 break;
                                         }
 
-                                        if (botNum == 0)                      // 普通下子
-                                            score[row][col] += 5;
-                                        else if (botNum == 1)                 // 活二
-                                            score[row][col] += 10;
-                                        else if (botNum == 2)
+                                        if (aiqiz == 0)                      // 普通下子
+                                            fenshu[hangs][leis] += 5;
+                                        else if (aiqiz == 1)                 // 活二
+                                            fenshu[hangs][leis] += 10;
+                                        else if (aiqiz == 2)
                                         {
-                                            if (emptyNum == 1)                // 死三
-                                               score[row][col] += 25;
-                                            else if (emptyNum == 2)
-                                                score[row][col] += 50;  // 活三
+                                            if (kong == 1)                // 死三
+                                               fenshu[hangs][leis] += 25;
+                                            else if (kong == 2)
+                                                fenshu[hangs][leis] += 50;  // 活三
                                         }
-                                        else if (botNum == 3)
+                                        else if (aiqiz == 3)
                                         {
-                                            if (emptyNum == 1)                // 死四
-                                                score[row][col] += 55;
-                                            else if (emptyNum == 2)
-                                                score[row][col] += 100; // 活四
+                                            if (kong == 1)                // 死四
+                                                fenshu[hangs][leis] += 55;
+                                            else if (kong == 2)
+                                                fenshu[hangs][leis] += 100; // 活四
                                         }
-                                        else if (botNum >= 4){
-                                            if (emptyNum == 1)
-                                                score[row][col] += 990;
-                                            else if (emptyNum == 2)
-                                                score[row][col] += 1990;  // 活五
+                                        else if (aiqiz >= 4){
+                                            if (kong == 1)
+                                                fenshu[hangs][leis] += 990;
+                                            else if (kong == 2)
+                                                fenshu[hangs][leis] += 1990;  // 活五
                                         }
-                                        else if (botNum >= 5)
-                                               score[row][col] += 101000;
+                                        else if (aiqiz >= 5)
+                                               fenshu[hangs][leis] += 101000;
                                     }
                                 }
 
@@ -266,11 +289,16 @@ void qi2::mousePressEvent(QMouseEvent * ){
                 {
                     if(z[i][y]==0)
                     {
-                        if(score[i][y]>maxs){maxs=score[i][y];xx=i;yy=y;}
+                        if(fenshu[i][y]>maxs){maxs=fenshu[i][y];xx=i;yy=y;}
                     }
                 }
             z[xx][yy]=flag;
             flag=-flag;
+            cc++;
+            cx[cc]=xx;
+            cy[cc]=yy;
+           // QSound *sound = new QSound(":/new/prefix1/5390 (1).wav");
+          //  sound->play();
             update();
 
         }

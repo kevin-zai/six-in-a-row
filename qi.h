@@ -20,7 +20,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent*e);
-
+    void mouseMoveEvent(QMouseEvent *e);
 signals:
     void signal1();
 
@@ -31,8 +31,12 @@ private:
     QPushButton p2;
     QPushButton p3;
     QPushButton p4;
+    QPushButton p5;
+    int cx[500];
+    int cy[500];
+    int cc=0;
     int flag=1;
-    int xx,yy,zero,one,ke;
+    int xx,yy,zero,one,ke,movex,movey;
     const int SIZE=20;
     const int WIDTH=40;
     const int x=40,y=40;

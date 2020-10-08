@@ -28,6 +28,10 @@ private:
     QPushButton p2;
     QPushButton p3;
     QPushButton p4;
+    QPushButton p5;
+    int cx[500];
+    int cy[500];
+    int cc=0;
     int flag=1;
     int xx,yy,zero,one;
 
